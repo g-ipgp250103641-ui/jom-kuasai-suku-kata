@@ -574,7 +574,7 @@
             <li>Dengar sebutan suku kata dengan menekan butang bertanda 🔊.</li>
             <li>Pilih dan gabungkan dua suku kata untuk membina perkataan yang bermakna.</li>
             <li>Padankan perkataan dengan gambar yang betul untuk mengumpul mata bintang ⭐.</li>
-            <li>Dapatkan lencana digital pada halaman **Lihat Keputusan**.</li>
+            <li>Dapatkan lencana digital pada halaman <strong>Lihat Keputusan</strong>.</li>
           </ul>
         </div>
 
@@ -692,7 +692,7 @@
           'viewMisi3': "Baca perkataan yang dipaparkan, kemudian cari gambar yang betul!",
           'viewMisi4': "Sebut perkataan ini dengan lantang! Nyatakan sejauh mana keupayaan anda.",
           'viewKuiz': "Jawab 10 soalan kuiz ini untuk menguji kepintaran membaca anda!",
-          'viewKeputusan': "Taniah di atas usaha anda! Mari kita lihat markah dan lencana yang diperoleh.",
+          'viewKeputusan': "Tahniah di atas usaha anda! Mari kita lihat markah dan lencana yang diperoleh.",
           'viewPanduan': "Panduan pelaksanaan Model ASSURE dan arahan penggunaan aplikasi untuk guru dan murid."
         };
         setCikguMessage(messages[viewId] || "Teruskan semangat belajar!");
@@ -700,7 +700,9 @@
         // Refresh display variables if visiting results
         if (viewId === 'viewKeputusan') updateKeputusanUI();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-       font-weight: bold;
+      },
+      showHome() {
+        this.show('viewHome');
       }
     };
 
@@ -732,7 +734,7 @@
             sk === misi1Selected ? 'bg-sky-500 text-white border-sky-600 scale-105 shadow-md' : 'bg-white text-sky-700 border-sky-200 hover:bg-sky-50'
           }`;
           btn.textContent = sk;
-          btn.onclick = () => this.select(sk, btn);
+          btn.onclick = () => this.select(sk);
           grid.appendChild(btn);
         });
       },
