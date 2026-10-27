@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jom Kuasai Suku Kata - Misi Membaca Bersama Cikgu Suku Kata</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka & Lexend -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Fredoka', 'Lexend', cursive, sans-serif;
+    }
+    
+    /* Playful Animated Sky & Grass Background */
+    body {
+      background: linear-gradient(180deg, #BAE6FD 0%, #E0F2FE 60%, #FEF08A 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Sun Graphic */
+    .sun-decor {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      width: 75px;
+      height: 75px;
+      background: #FDE047;
+      border: 4px solid #FACC15;
+      border-radius: 50%;
+      box-shadow: 0 0 25px #FDE047;
+      animation: pulseSun 4s infinite alternate ease-in-out;
+      z-index: 0;
+    }
+    
+    @keyframes pulseSun {
+      0% { transform: scale(0.95) rotate(0deg); }
+      100% { transform: scale(1.05) rotate(15deg); }
+    }
+
+    /* Floating Animated Clouds */
+    .cloud {
+      position: absolute;
+      background: #FFFFFF;
+      border-radius: 50px;
+      opacity: 0.9;
+      animation: floatCloud linear infinite;
+      z-index: 0;
+    }
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: #FFFFFF;
+      border-radius: 50%;
+    }
+    .cloud1 {
+      width: 120px; height: 40px; top: 40px; left: -140px;
+      animation-duration: 35s;
+    }
+    .cloud1::before { width: 50px; height: 50px; top: -20px; left: 20px; }
+    .cloud1::after { width: 40px; height: 40px; top: -15px; right: 20px; }
+    
+    .cloud2 {
+      width: 160px; height: 50px; top: 110px; left: -180px;
+      animation-duration: 45s; animation-delay: 12s;
+    }
+    .cloud2::before { width: 65px; height: 65px; top: -25px; left: 25px; }
+    .cloud2::after { width: 50px; height: 50px; top: -18px; right: 25px; }
+
+    @keyframes floatCloud {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(100vw + 250px)); }
+    }
+
+    /* Playful Card & Button Styles */
+    .play-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 3px solid #E2E8F0;
+      box-shadow: 0 10px 0px 0px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .play-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 0px 0px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-3d {
+      transition: all 0.15s ease;
+      box-shadow: 0 6px 0px 0px currentColor;
+      position: relative;
+    }
+    .btn-3d:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0px 0px currentColor;
+    }
+    
+    /* Syllable Highlighting Animation */
+    .syllables-highlight {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .syllables-highlight:hover {
+      transform: scale(1.15) rotate(-3deg);
+    }
+
+    /* Cartoon Character Bounce */
+    .cikgu-avatar {
+      animation: floatCikgu 3s ease-in-out infinite alternate;
+    }
+    @keyframes floatCikgu {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-amber-200">
+
+  <!-- Visual Background Decoration -->
+  <div class="sun-decor pointer-events-none hidden sm:block"></div>
+  <div class="cloud cloud1 pointer-events-none"></div>
+  <div class="cloud cloud2 pointer-events-none"></div>
+
+  <!-- Top App Navigation Header -->
+  <header class="relative z-10 bg-white/80 backdrop-blur-md border-b-4 border-sky-300 px-4 py-3 sticky top-0 shadow-sm">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <button onclick="nav.showHome()" class="flex items-center gap-2 group focus:outline-none">
+        <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">📚</span>
+        <div class="text-left">
+          <h1 class="text-xl sm:text-2xl font-black tracking-wide text-sky-600 drop-shadow-sm leading-none">JOM KUASAI SUKU KATA</h1>
+          <p class="text-xs sm:text-sm font-semibold text-amber-500 hidden sm:block">Misi Membaca Bersama Cikgu Suku Kata</p>
+        </div>
+      </button>
+
+      <!-- User Progress Header Badge -->
+      <div class="flex items-center gap-3">
+        <div class="bg-amber-100 border-2 border-amber-300 text-amber-800 px-3 py-1 rounded-full font-bold text-sm sm:text-base flex items-center gap-1.5 shadow-sm">
+          <span>⭐</span> <span id="headerScore">0</span> Mata
+        </div>
+        <button onclick="nav.showHome()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-3 py-1.5 rounded-xl border-b-4 border-sky-700 text-sm flex items-center gap-1 transition-all active:translate-y-0.5">
+          🏠 <span class="hidden sm:inline">Menu Utama</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content View Container -->
+  <main class="relative z-10 max-w-5xl mx-auto p-4 sm:p-6 pb-24">
+    
+    <!-- Cikgu Suku Kata Speech Bubble Bar -->
+    <div id="cikguBubbleContainer" class="mb-6 flex items-end gap-3 max-w-2xl mx-auto">
+      <div class="cikgu-avatar w-16 h-16 sm:w-20 sm:h-20 bg-amber-300 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-3xl sm:text-4xl shrink-0">
+        👩‍🏫
+      </div>
+      <div class="bg-white border-3 border-sky-300 p-3 sm:p-4 rounded-3xl rounded-bl-none shadow-md relative w-full">
+        <span class="text-xs font-bold text-sky-600 block mb-0.5">Cikgu Suku Kata</span>
+        <p id="cikguMessage" class="text-sm sm:text-base font-semibold text-slate-700 leading-snug">
+          Selamat datang! Mari kita belajar membunyikan dan mencantum suku kata bersama-sama!
+        </p>
+      </div>
+    </div>
+
+    <!-- VIEW 0: HOME MENU -->
+    <section id="viewHome" class="space-y-6">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-black text-sky-700 drop-shadow-sm">Pilih Misi Pembelajaran Anda!</h2>
+        <p class="text-slate-600 font-medium text-sm sm:text-base">Tekan mana-mana butang aktiviti di bawah untuk memulakan pengembaraan membaca.</p>
+      </div>
+
+      <!-- 8 Navigation Menu Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <button onclick="misiNav.startGuided()" class="play-card bg-emerald-400 hover:bg-emerald-300 text-slate-800 p-5 rounded-3xl text-left border-b-8 border-emerald-600 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">🚀</span>
+            <span class="bg-emerald-700 text-white text-xs px-2.5 py-1 rounded-full font-bold">Mula</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-emerald-900 uppercase tracking-wider block">Berpandu</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">1. Mula Bermain</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewMisi1')" class="play-card bg-sky-200 hover:bg-sky-100 p-5 rounded-3xl text-left border-b-8 border-sky-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">🗣️</span>
+            <span class="bg-sky-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Misi 1</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-sky-700 uppercase tracking-wider block">OPD 1</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">2. Kenali Suku Kata</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewMisi2')" class="play-card bg-amber-200 hover:bg-amber-100 p-5 rounded-3xl text-left border-b-8 border-amber-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">🧩</span>
+            <span class="bg-amber-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Misi 2</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block">OPD 2</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">3. Cantum Suku Kata</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewMisi3')" class="play-card bg-pink-200 hover:bg-pink-100 p-5 rounded-3xl text-left border-b-8 border-pink-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">🖼️</span>
+            <span class="bg-pink-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Misi 3</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-pink-700 uppercase tracking-wider block">Padanan</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">4. Misi Cari Gambar</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewMisi4')" class="play-card bg-purple-200 hover:bg-purple-100 p-5 rounded-3xl text-left border-b-8 border-purple-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">📖</span>
+            <span class="bg-purple-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Misi 4</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-purple-700 uppercase tracking-wider block">Lisan</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">5. Cabaran Membaca</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewKuiz')" class="play-card bg-indigo-200 hover:bg-indigo-100 p-5 rounded-3xl text-left border-b-8 border-indigo-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">📝</span>
+            <span class="bg-indigo-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">OPD 3</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider block">Penilaian</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">6. Kuiz Saya</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewKeputusan')" class="play-card bg-teal-200 hover:bg-teal-100 p-5 rounded-3xl text-left border-b-8 border-teal-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">🏆</span>
+            <span class="bg-teal-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Prestasi</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider block">Pencapaian</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">7. Lihat Keputusan</span>
+          </div>
+        </button>
+
+        <button onclick="nav.show('viewPanduan')" class="play-card bg-orange-200 hover:bg-orange-100 p-5 rounded-3xl text-left border-b-8 border-orange-400 flex flex-col justify-between h-36 group">
+          <div class="flex justify-between items-start">
+            <span class="text-4xl group-hover:scale-125 transition-transform">❓</span>
+            <span class="bg-orange-500 text-white text-xs px-2.5 py-1 rounded-full font-bold">Info</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-orange-700 uppercase tracking-wider block">ASSURE & Panduan</span>
+            <span class="text-lg font-black text-slate-900 leading-tight">8. Cara Bermain</span>
+          </div>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- VIEW 1: MISI 1 - KENALI SUKU KATA (OPD 1) -->
+    <section id="viewMisi1" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 border-4 border-sky-300 shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xs font-bold text-sky-600 bg-sky-100 px-3 py-1 rounded-full">OPD 1 — Kad Visual Suku Kata</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">Misi 1 — Kenali Bunyi</h2>
+          </div>
+          <button onclick="nav.showHome()" class="text-sm bg-slate-100 hover:bg-slate-200 font-bold px-3 py-1.5 rounded-xl border border-slate-300">
+            ↩️ Menu
+          </button>
+        </div>
+
+        <!-- Display Area for Selected Syllable -->
+        <div class="bg-gradient-to-br from-sky-50 to-blue-100 rounded-2xl p-6 text-center border-2 border-sky-200 mb-6">
+          <p class="text-xs font-bold text-sky-600 mb-1">ARAHAN: Tekan mana-mana kad suku kata di bawah kemudian sebut bersama Cikgu!</p>
+          <div id="misi1Display" class="text-6xl sm:text-7xl font-black text-sky-600 my-2 tracking-widest">
+            BA
+          </div>
+          <p id="misi1Prompt" class="text-sm font-semibold text-slate-600 mb-4">Sebut suku kata ini: <strong class="text-sky-700 font-black">BA</strong></p>
+          
+          <button onclick="misi1.speakCurrent()" class="btn-3d bg-amber-400 hover:bg-amber-300 text-amber-950 font-bold px-6 py-2.5 rounded-2xl border-b-4 border-amber-600 inline-flex items-center gap-2">
+            🔊 Dengar Sebutan
+          </button>
+        </div>
+
+        <!-- Syllable Cards Grid -->
+        <div class="grid grid-cols-3 sm:grid-cols-5 gap-3" id="misi1Grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="mt-6 flex justify-between items-center pt-4 border-t border-slate-100">
+          <p class="text-xs text-slate-500 font-semibold">* Penilaian lisan perlu dipantau oleh guru / ibu bapa.</p>
+          <button onclick="nav.show('viewMisi2')" class="btn-3d bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-emerald-700 text-sm">
+            Seterusnya: Misi 2 ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: MISI 2 - CANTUM SUKU KATA (OPD 2) -->
+    <section id="viewMisi2" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 border-4 border-amber-300 shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xs font-bold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">OPD 2 — Modul Demonstrasi Interaktif</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">Misi 2 — Cantum dan Baca</h2>
+          </div>
+          <span id="misi2Progress" class="text-xs font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full">Soalan 1 / 10</span>
+        </div>
+
+        <div class="bg-amber-50 rounded-2xl p-6 border-2 border-amber-200 text-center space-y-4">
+          <p class="text-sm font-bold text-amber-900">Pilih 2 suku kata yang betul untuk membentuk perkataan bagi gambar ini:</p>
+
+          <!-- Target Image Illustration -->
+          <div id="misi2TargetImage" class="text-7xl sm:text-8xl my-2">
+            📚
+          </div>
+
+          <!-- Syllables Slots -->
+          <div class="flex justify-center items-center gap-3">
+            <div id="slot1" class="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl border-4 border-dashed border-amber-400 flex items-center justify-center text-3xl font-black text-amber-700 shadow-inner">
+              ?
+            </div>
+            <span class="text-3xl font-black text-amber-400">+</span>
+            <div id="slot2" class="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl border-4 border-dashed border-amber-400 flex items-center justify-center text-3xl font-black text-amber-700 shadow-inner">
+              ?
+            </div>
+            <span class="text-3xl font-black text-amber-400">=</span>
+            <div id="slotResult" class="min-w-[100px] h-20 sm:h-24 px-4 bg-amber-200 rounded-2xl border-4 border-amber-400 flex items-center justify-center text-2xl sm:text-3xl font-black text-amber-900">
+              ...
+            </div>
+          </div>
+
+          <!-- Options Grid -->
+          <div id="misi2Options" class="grid grid-cols-4 gap-3 max-w-md mx-auto pt-2">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Feedback Box -->
+          <div id="misi2Feedback" class="hidden p-3 rounded-xl font-bold text-sm"></div>
+        </div>
+
+        <div class="mt-4 flex justify-between items-center">
+          <button onclick="misi2.resetCurrent()" class="text-sm font-bold text-slate-600 hover:text-slate-800 underline">
+            🔄 Cuba Lagi
+          </button>
+          <button id="btnMisi2Next" onclick="misi2.next()" class="btn-3d bg-amber-500 hover:bg-amber-400 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-amber-700 text-sm" disabled>
+            Perkataan Seterusnya ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: MISI 3 - MISI CARI GAMBAR -->
+    <section id="viewMisi3" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 border-4 border-pink-300 shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xs font-bold text-pink-700 bg-pink-100 px-3 py-1 rounded-full">Aktiviti 3 — Padankan Perkataan</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">Misi 3 — Cari Gambar Sebenar</h2>
+          </div>
+          <span id="misi3Progress" class="text-xs font-bold bg-pink-100 text-pink-800 px-3 py-1 rounded-full">1 / 10</span>
+        </div>
+
+        <div class="bg-pink-50 rounded-2xl p-6 border-2 border-pink-200 text-center space-y-4">
+          <p class="text-sm font-bold text-pink-900">Pilih gambar yang betul mengikut perkataan ini:</p>
+          
+          <div id="misi3Word" class="text-5xl sm:text-6xl font-black text-pink-600 tracking-wider bg-white py-3 px-6 rounded-2xl inline-block border-2 border-pink-200 shadow-sm">
+            BUKU
+          </div>
+
+          <!-- 4 Image Choice Grid -->
+          <div id="misi3Grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto pt-4">
+            <!-- Populated by JS -->
+          </div>
+
+          <div id="misi3Feedback" class="hidden p-3 rounded-xl font-bold text-sm"></div>
+        </div>
+
+        <div class="mt-4 flex justify-end">
+          <button id="btnMisi3Next" onclick="misi3.next()" class="btn-3d bg-pink-500 hover:bg-pink-400 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-pink-700 text-sm" disabled>
+            Soalan Seterusnya ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: MISI 4 - CABARAN MEMBACA -->
+    <section id="viewMisi4" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 border-4 border-purple-300 shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xs font-bold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">Aktiviti 4 — Ujian Bacaan Lisan</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">Misi 4 — Saya Boleh Membaca!</h2>
+          </div>
+          <span id="misi4Progress" class="text-xs font-bold bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Perkataan 1 / 10</span>
+        </div>
+
+        <div class="bg-purple-50 rounded-2xl p-6 border-2 border-purple-200 text-center space-y-4">
+          <div id="misi4Image" class="text-7xl sm:text-8xl mb-2">
+            👕
+          </div>
+
+          <div id="misi4Word" class="text-5xl font-black text-purple-700 tracking-wider">
+            BAJU
+          </div>
+
+          <button onclick="misi4.speakWord()" class="btn-3d bg-purple-500 hover:bg-purple-400 text-white font-bold px-4 py-2 rounded-xl border-b-4 border-purple-700 text-sm inline-flex items-center gap-2">
+            🔊 Dengar Sebutan Perkataan
+          </button>
+
+          <div class="border-t border-purple-200 pt-4 mt-2">
+            <p class="text-sm font-bold text-purple-900 mb-3">Bagaimana bacaan anda secara lisan?</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-md mx-auto">
+              <button onclick="misi4.recordSelfEval('lancar')" class="play-card p-3 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200">
+                🌟 Saya boleh membaca sendiri
+              </button>
+              <button onclick="misi4.recordSelfEval('bantuan')" class="play-card p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200">
+                🤝 Perlu sedikit bantuan
+              </button>
+              <button onclick="misi4.recordSelfEval('cuba')" class="play-card p-3 rounded-xl text-xs font-bold bg-sky-100 text-sky-800 border-sky-300 hover:bg-sky-200">
+                🔄 Mahu mencuba lagi
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex justify-between items-center">
+          <p class="text-xs text-purple-700 font-semibold">* Penilaian kendiri membantu cadangan aktiviti susulan.</p>
+          <button id="btnMisi4Next" onclick="misi4.next()" class="btn-3d bg-purple-600 hover:bg-purple-500 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-purple-800 text-sm" disabled>
+            Perkataan Seterusnya ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: KUIZ FORMATIF (OPD 3) -->
+    <section id="viewKuiz" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-5 border-4 border-indigo-300 shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">OPD 3 — Penilaian Formatif</span>
+            <h2 class="text-2xl font-black text-slate-800 mt-1">Kuiz Pintar — Uji Kemahiran Saya</h2>
+          </div>
+          <span id="kuizProgress" class="text-xs font-bold bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Soalan 1 / 10</span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden">
+          <div id="kuizProgressBar" class="bg-indigo-500 h-full w-10 transition-all duration-300"></div>
+        </div>
+
+        <div class="bg-indigo-50 rounded-2xl p-6 border-2 border-indigo-200 space-y-4">
+          <span id="kuizCategory" class="text-xs font-bold text-indigo-600 uppercase tracking-wider block">Kategori Soalan</span>
+          <h3 id="kuizQuestionText" class="text-xl font-bold text-slate-800">
+            Apakah suku kata yang memulakan perkataan ini?
+          </h3>
+          
+          <div id="kuizVisualPrompt" class="text-6xl text-center py-2">
+            🎲
+          </div>
+
+          <!-- 4 Multiple Choice Buttons -->
+          <div id="kuizOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <!-- Populated by JS -->
+          </div>
+
+          <div id="kuizFeedback" class="hidden p-3 rounded-xl font-bold text-sm text-center"></div>
+        </div>
+
+        <div class="mt-4 flex justify-between items-center">
+          <button onclick="kuiz.restart()" class="text-sm font-bold text-slate-500 hover:text-slate-800 underline">
+            🔄 Mula Semula Kuiz
+          </button>
+          <button id="btnKuizNext" onclick="kuiz.next()" class="btn-3d bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-indigo-800 text-sm" disabled>
+            Soalan Seterusnya ➡️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: LIHAT KEPUTUSAN & GANJARAN GAMIFIKASI -->
+    <section id="viewKeputusan" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 border-4 border-teal-300 shadow-md space-y-6">
+        <div class="text-center space-y-2">
+          <span class="text-4xl">🏆</span>
+          <h2 class="text-3xl font-black text-teal-700">Pencapaian & Keputusan Saya</h2>
+          <p class="text-slate-600 font-medium text-sm">Lihat kemajuan pembelajaran dan lencana yang telah anda kumpul!</p>
+        </div>
+
+        <!-- Summary Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div class="bg-teal-50 border-2 border-teal-200 p-4 rounded-2xl">
+            <span class="text-xs font-bold text-teal-600 uppercase">Mata Terkumpul</span>
+            <p id="resTotalPoints" class="text-4xl font-black text-teal-700 mt-1">0</p>
+          </div>
+          <div class="bg-indigo-50 border-2 border-indigo-200 p-4 rounded-2xl">
+            <span class="text-xs font-bold text-indigo-600 uppercase">Skor Kuiz Terakhir</span>
+            <p id="resQuizScore" class="text-4xl font-black text-indigo-700 mt-1">0 / 10</p>
+          </div>
+          <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl">
+            <span class="text-xs font-bold text-amber-600 uppercase">Misi Diselesaikan</span>
+            <p id="resCompletedCount" class="text-4xl font-black text-amber-700 mt-1">0 / 4</p>
+          </div>
+        </div>
+
+        <!-- Feedback Encouragement Box -->
+        <div id="resFeedbackBox" class="bg-sky-50 border-2 border-sky-200 p-4 rounded-2xl text-center">
+          <p id="resFeedbackText" class="font-bold text-sky-800 text-base">
+            Mari kita selesaikan aktiviti untuk membuka lencana khas!
+          </p>
+        </div>
+
+        <!-- Badges Gamification Collection -->
+        <div class="space-y-3">
+          <h3 class="font-black text-lg text-slate-800">Lencana Pencapaian Digital:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            
+            <div id="badge1" class="border-2 border-slate-200 p-4 rounded-2xl flex items-center gap-3 opacity-40 transition-all">
+              <span class="text-4xl">🥇</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">Kenali Suku Kata</h4>
+                <p class="text-xs text-slate-500">Selesaikan Misi 1</p>
+              </div>
+            </div>
+
+            <div id="badge2" class="border-2 border-slate-200 p-4 rounded-2xl flex items-center gap-3 opacity-40 transition-all">
+              <span class="text-4xl">🧩</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">Juara Cantuman</h4>
+                <p class="text-xs text-slate-500">Selesaikan Misi 2</p>
+              </div>
+            </div>
+
+            <div id="badge3" class="border-2 border-slate-200 p-4 rounded-2xl flex items-center gap-3 opacity-40 transition-all">
+              <span class="text-4xl">👑</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">Pembaca Hebat</h4>
+                <p class="text-xs text-slate-500">Skor Kuiz 8/10 atau lebih</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex justify-center gap-3">
+          <button onclick="nav.showHome()" class="btn-3d bg-sky-500 hover:bg-sky-400 text-white font-bold px-6 py-2.5 rounded-xl border-b-4 border-sky-700 text-sm">
+            🏠 Kembali ke Menu Utama
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 7: CARA BERMAIN & PEMETAAN MODEL ASSURE -->
+    <section id="viewPanduan" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl p-6 border-4 border-orange-300 shadow-md space-y-6">
+        <div>
+          <span class="text-xs font-bold text-orange-700 bg-orange-100 px-3 py-1 rounded-full">Panduan & Dokumentasi Pedagogi</span>
+          <h2 class="text-2xl font-black text-slate-800 mt-1">Cara Bermain & Integrasi Model ASSURE</h2>
+        </div>
+
+        <!-- Instructions for Pupils -->
+        <div class="space-y-3">
+          <h3 class="font-bold text-base text-orange-800 flex items-center gap-2">🎮 Arahan Ringkas Murid:</h3>
+          <ul class="list-disc list-inside text-sm text-slate-700 space-y-1.5 pl-2 font-medium">
+            <li>Tekan butang <strong>Mula Bermain</strong> untuk terus mengikuti susunan aktiviti secara berpandu.</li>
+            <li>Dengar sebutan suku kata dengan menekan butang bertanda 🔊.</li>
+            <li>Pilih dan gabungkan dua suku kata untuk membina perkataan yang bermakna.</li>
+            <li>Padankan perkataan dengan gambar yang betul untuk mengumpul mata bintang ⭐.</li>
+            <li>Dapatkan lencana digital pada halaman **Lihat Keputusan**.</li>
+          </ul>
+        </div>
+
+        <!-- ASSURE Model Mapping Table -->
+        <div class="space-y-3 border-t border-slate-200 pt-4">
+          <h3 class="font-bold text-base text-sky-800 flex items-center gap-2">📘 Pemetaan Fasa Model ASSURE:</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">A — Analyze Learners (Analisis Murid)</strong>
+              Murid Tahun 1 & Pemulihan Khas yang memerlukan latihan pengukuhan membaca KV dan KVKV secara visual dan pendengaran.
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">S — State Objectives (Nyatakan Objektif)</strong>
+              Membunyikan suku kata KV, menggabungkan KV+KV menjadi KVKV, dan memadankan perkataan dengan gambar yang betul.
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">S — Select Methods & Media (Pilih Kaedah/Media)</strong>
+              Integrasi pendekatan fonik interaktif, kad visual suku kata digital (OPD 1), dan modul demonstrasi cantuman (OPD 2).
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">U — Utilize Media (Gunakan Media)</strong>
+              Antara muka CASPER mesra kanak-kanak tanpa fasiliti backend luar, bersedia dijalankan secara tempatan dalam pelayar.
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">R — Require Learner Participation (Penglibatan)</strong>
+              Murid aktif menekan kad, memilih pilihan gambar, melakukan penilaian kendiri, dan mengambil kuiz formatif interaktif.
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <strong class="text-sky-700 block mb-1">E — Evaluate & Revise (Penilaian & Semakan)</strong>
+              Kuiz formatif 10 soalan (OPD 3), rekod markah sesi, ganjaran lencana, serta bimbingan penilaian lisan guru.
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Teacher Verification Disclaimer -->
+        <div class="bg-amber-50 border-2 border-amber-300 p-3 rounded-xl text-xs text-amber-900 font-semibold">
+          📌 <strong>Nota Bahan Disemak oleh Guru:</strong> Kandungan ejaan, gambar emoji, serta sebutan audio telah disesuaikan mengikut Dokumen Standard Kurikulum dan Pentaksiran (DSKP) Bahasa Melayu Sekolah Rendah.
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button onclick="nav.showHome()" class="btn-3d bg-orange-500 hover:bg-orange-400 text-white font-bold px-5 py-2 rounded-xl border-b-4 border-orange-700 text-sm">
+            🏠 Kembali ke Menu Utama
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Application Logic JavaScript Script -->
+  <script>
+    /**
+     * GLOBAL STATE MANAGEMENT
+     */
+    const state = {
+      score: 0,
+      completedMisi: new Set(),
+      badges: {
+        kenali: false,
+        cantum: false,
+        pembaca: false
+      },
+      quizScore: 0,
+      misi4SelfEval: []
+    };
+
+    /**
+     * SPEECH SYNTHESIS HELPER (Web Speech API)
+     */
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop ongoing speech
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ms-MY'; // Bahasa Melayu Malaysia
+        utterance.rate = 0.85; // Slightly slower speed for children
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /**
+     * CIKGU SUKU KATA MESSAGING CONTROLLER
+     */
+    function setCikguMessage(msg) {
+      const el = document.getElementById('cikguMessage');
+      if (el) el.textContent = msg;
+    }
+
+    /**
+     * NAVIGATION CONTROLLER
+     */
+    const nav = {
+      views: ['viewHome', 'viewMisi1', 'viewMisi2', 'viewMisi3', 'viewMisi4', 'viewKuiz', 'viewKeputusan', 'viewPanduan'],
+      
+      show(viewId) {
+        this.views.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add('hidden');
+        });
+        
+        const target = document.getElementById(viewId);
+        if (target) target.classList.remove('hidden');
+
+        // Dynamic Cikgu Messages per View
+        const messages = {
+          'viewHome': "Selamat datang! Mari kita belajar membunyikan dan mencantum suku kata bersama-sama!",
+          'viewMisi1': "Tekan mana-mana kad suku kata dan sebut bunyi itu bersama-sama Cikgu!",
+          'viewMisi2': "Pilih dua suku kata yang tepat untuk membina perkataan berpandukan gambar.",
+          'viewMisi3': "Baca perkataan yang dipaparkan, kemudian cari gambar yang betul!",
+          'viewMisi4': "Sebut perkataan ini dengan lantang! Nyatakan sejauh mana keupayaan anda.",
+          'viewKuiz': "Jawab 10 soalan kuiz ini untuk menguji kepintaran membaca anda!",
+          'viewKeputusan': "Taniah di atas usaha anda! Mari kita lihat markah dan lencana yang diperoleh.",
+          'viewPanduan': "Panduan pelaksanaan Model ASSURE dan arahan penggunaan aplikasi untuk guru dan murid."
+        };
+        setCikguMessage(messages[viewId] || "Teruskan semangat belajar!");
+        
+        // Refresh display variables if visiting results
+        if (viewId === 'viewKeputusan') updateKeputusanUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+       font-weight: bold;
+      }
+    };
+
+    /**
+     * GUIDED PLAYFLOW CONTROLLER (Mula Bermain)
+     */
+    const misiNav = {
+      startGuided() {
+        nav.show('viewMisi1');
+        setCikguMessage("Mari kita mulakan Misi 1 terlebih dahulu untuk membunyikan suku kata asas!");
+      }
+    };
+
+    /**
+     * MISI 1: KENALI SUKU KATA (OPD 1)
+     */
+    const misi1Data = ['BA', 'BU', 'KU', 'JU', 'SU', 'DU', 'DA', 'KA', 'KI', 'GI', 'GU', 'BO', 'LA', 'TO', 'PI'];
+    let misi1Selected = 'BA';
+
+    const misi1 = {
+      init() {
+        const grid = document.getElementById('misi1Grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        misi1Data.forEach(sk => {
+          const btn = document.createElement('button');
+          btn.className = `play-card p-4 rounded-2xl text-2xl font-black border-2 transition-all ${
+            sk === misi1Selected ? 'bg-sky-500 text-white border-sky-600 scale-105 shadow-md' : 'bg-white text-sky-700 border-sky-200 hover:bg-sky-50'
+          }`;
+          btn.textContent = sk;
+          btn.onclick = () => this.select(sk, btn);
+          grid.appendChild(btn);
+        });
+      },
+      select(sk) {
+        misi1Selected = sk;
+        document.getElementById('misi1Display').textContent = sk;
+        document.getElementById('misi1Prompt').innerHTML = `Sebut suku kata ini: <strong class="text-sky-700 font-black">${sk}</strong>`;
+        this.init();
+        this.speakCurrent();
+
+        // Award Progress
+        state.completedMisi.add('misi1');
+        state.badges.kenali = true;
+        updateHeaderScore();
+      },
+      speakCurrent() {
+        speakText(misi1Selected);
+      }
+    };
+
+    /**
+     * MISI 2: CANTUM SUKU KATA (OPD 2)
+     */
+    const misi2Data = [
+      { sk1: 'BU', sk2: 'KU', word: 'BUKU', icon: '📚' },
+      { sk1: 'BA', sk2: 'JU', word: 'BAJU', icon: '👕' },
+      { sk1: 'SU', sk2: 'DU', word: 'SUDU', icon: '🥄' },
+      { sk1: 'DA', sk2: 'DU', word: 'DADU', icon: '🎲' },
+      { sk1: 'KA', sk2: 'KI', word: 'KAKI', icon: '🦶' },
+      { sk1: 'GI', sk2: 'GI', word: 'GIGI', icon: '🦷' },
+      { sk1: 'SU', sk2: 'SU', word: 'SUSU', icon: '🥛' },
+      { sk1: 'KU', sk2: 'DA', word: 'KUDA', icon: '🐴' },
+      { sk1: 'BO', sk2: 'LA', word: 'BOLA', icon: '⚽' },
+      { sk1: 'TO', sk2: 'PI', word: 'TOPI', icon: '🧢' }
+    ];
+    let misi2Index = 0;
+    let misi2Selection = [];
+
+    const misi2 = {
+      init() {
+        const current = misi2Data[misi2Index];
+        document.getElementById('misi2Progress').textContent = `Perkataan ${misi2Index + 1} / 10`;
+        document.getElementById('misi2TargetImage').textContent = current.icon;
+        
+        misi2Selection = [];
+        this.updateSlots();
+
+        // Pool of Syllables choices
+        const pool = [current.sk1, current.sk2, 'MA', 'RO', 'LE', 'NI'].sort(() => Math.random() - 0.5);
+        const container = document.getElementById('misi2Options');
+        container.innerHTML = '';
+
+        pool.slice(0, 4).forEach(sk => {
+          const btn = document.createElement('button');
+          btn.className = "btn-3d bg-white border-2 border-amber-300 hover:bg-amber-100 text-amber-900 font-black py-3 rounded-xl text-xl border-b-4 border-amber-400";
+          btn.textContent = sk;
+          btn.onclick = () => this.pick(sk, btn);
+          container.appendChild(btn);
+        });
+
+        document.getElementById('misi2Feedback').className = "hidden p-3 rounded-xl font-bold text-sm";
+        document.getElementById('btnMisi2Next').disabled = true;
+      },
+      pick(sk, btn) {
+        if (misi2Selection.length < 2) {
+          misi2Selection.push(sk);
+          btn.disabled = true;
+          btn.classList.add('opacity-40');
+          this.updateSlots();
+
+          if (misi2Selection.length === 2) {
+            this.checkAnswer();
+          }
+        }
+      },
+      updateSlots() {
+        document.getElementById('slot1').textContent = misi2Selection[0] || '?';
+        document.getElementById('slot2').textContent = misi2Selection[1] || '?';
+        document.getElementById('slotResult').textContent = misi2Selection.join('') || '...';
+      },
+      checkAnswer() {
+        const current = misi2Data[misi2Index];
+        const formed = misi2Selection.join('');
+        const fb = document.getElementById('misi2Feedback');
+        fb.classList.remove('hidden');
+
+        if (formed === current.word) {
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300";
+          fb.textContent = `🎉 Bagus! ${current.sk1} dan ${current.sk2} membentuk perkataan ${current.word}.`;
+          speakText(current.word);
+          addPoints(1);
+          document.getElementById('btnMisi2Next').disabled = false;
+        } else {
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300";
+          fb.textContent = "💡 Cuba lihat semula suku kata. Sila tekan 'Cuba Lagi'.";
+        }
+      },
+      resetCurrent() {
+        this.init();
+      },
+      next() {
+        if (misi2Index < misi2Data.length - 1) {
+          misi2Index++;
+          this.init();
+        } else {
+          state.completedMisi.add('misi2');
+          state.badges.cantum = true;
+          setCikguMessage("Tahniah! Anda telah berjaya menyelesaikan semua modul cantuman suku kata!");
+          nav.show('viewMisi3');
+        }
+      }
+    };
+
+    /**
+     * MISI 3: MISI CARI GAMBAR
+     */
+    const misi3Data = [
+      { word: 'BUKU', correct: '📚', options: ['📚', '👕', '🥄', '⚽'] },
+      { word: 'BAJU', correct: '👕', options: ['🧢', '👕', '🎲', '🦶'] },
+      { word: 'SUDU', correct: '🥄', options: ['🥛', '🐴', '🥄', '🦷'] },
+      { word: 'DADU', correct: '🎲', options: ['🎲', '⚽', '📚', '👕'] },
+      { word: 'KAKI', correct: '🦶', options: ['🦷', '🦶', '🥛', '🧢'] },
+      { word: 'GIGI', correct: '🦷', options: ['🦷', '🥄', '🐴', '⚽'] },
+      { word: 'SUSU', correct: '🥛', options: ['📚', '🥛', '🎲', '👕'] },
+      { word: 'KUDA', correct: '🐴', options: ['🐴', '⚽', '🧢', '🦶'] },
+      { word: 'BOLA', correct: '⚽', options: ['👕', '🎲', '⚽', '📚'] },
+      { word: 'TOPI', correct: '🧢', options: ['🧢', '🥄', '🥛', '🐴'] }
+    ];
+    let misi3Index = 0;
+
+    const misi3 = {
+      init() {
+        const current = misi3Data[misi3Index];
+        document.getElementById('misi3Progress').textContent = `${misi3Index + 1} / 10`;
+        document.getElementById('misi3Word').textContent = current.word;
+        
+        const grid = document.getElementById('misi3Grid');
+        grid.innerHTML = '';
+
+        const shuffledOptions = [...current.options].sort(() => Math.random() - 0.5);
+
+        shuffledOptions.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = "play-card bg-white border-3 border-pink-200 hover:border-pink-400 p-4 rounded-2xl text-6xl text-center transition-all flex items-center justify-center h-28";
+          btn.textContent = opt;
+          btn.onclick = () => this.check(opt, current.correct, btn);
+          grid.appendChild(btn);
+        });
+
+        document.getElementById('misi3Feedback').className = "hidden p-3 rounded-xl font-bold text-sm";
+        document.getElementById('btnMisi3Next').disabled = true;
+      },
+      check(selected, correct, btn) {
+        const fb = document.getElementById('misi3Feedback');
+        fb.classList.remove('hidden');
+
+        if (selected === correct) {
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300";
+          fb.textContent = "🌟 Tepat sekali! Gambar yang anda pilih sangat sepadan!";
+          addPoints(1);
+          document.getElementById('btnMisi3Next').disabled = false;
+        } else {
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300";
+          fb.textContent = "❌ Hampir tepat! Cuba amati gambar lain yang sepadan.";
+          btn.disabled = true;
+          btn.classList.add('opacity-30');
+        }
+      },
+      next() {
+        if (misi3Index < misi3Data.length - 1) {
+          misi3Index++;
+          this.init();
+        } else {
+          state.completedMisi.add('misi3');
+          nav.show('viewMisi4');
+        }
+      }
+    };
+
+    /**
+     * MISI 4: CABARAN MEMBACA
+     */
+    const misi4Data = [
+      { word: 'BUKU', icon: '📚' },
+      { word: 'BAJU', icon: '👕' },
+      { word: 'SUDU', icon: '🥄' },
+      { word: 'DADU', icon: '🎲' },
+      { word: 'KAKI', icon: '🦶' },
+      { word: 'GIGI', icon: '🦷' },
+      { word: 'SUSU', icon: '🥛' },
+      { word: 'KUDA', icon: '🐴' },
+      { word: 'BOLA', icon: '⚽' },
+      { word: 'TOPI', icon: '🧢' }
+    ];
+    let misi4Index = 0;
+
+    const misi4 = {
+      init() {
+        const current = misi4Data[misi4Index];
+        document.getElementById('misi4Progress').textContent = `Perkataan ${misi4Index + 1} / 10`;
+        document.getElementById('misi4Image').textContent = current.icon;
+        document.getElementById('misi4Word').textContent = current.word;
+        document.getElementById('btnMisi4Next').disabled = true;
+      },
+      speakWord() {
+        speakText(misi4Data[misi4Index].word);
+      },
+      recordSelfEval(type) {
+        state.misi4SelfEval.push({ word: misi4Data[misi4Index].word, status: type });
+        addPoints(1);
+        document.getElementById('btnMisi4Next').disabled = false;
+        setCikguMessage("Terima kasih atas penilaian kendiri anda. Teruskan latihan!");
+      },
+      next() {
+        if (misi4Index < misi4Data.length - 1) {
+          misi4Index++;
+          this.init();
+        } else {
+          state.completedMisi.add('misi4');
+          nav.show('viewKuiz');
+        }
+      }
+    };
+
+    /**
+     * KUIZ FORMATIF 10 SOALAN (OPD 3)
+     */
+    const kuizPool = [
+      { cat: 'Mengenal Suku Kata', q: 'Suku kata manakah yang berbunyi /ba/?', visual: '🗣️', options: ['BA', 'BU', 'KI', 'DU'], ans: 0 },
+      { cat: 'Gabungan Suku Kata', q: 'BU + KU akan membentuk perkataan ...', visual: '📚', options: ['BADA', 'BUKU', 'Kuda', 'BUDU'], ans: 1 },
+      { cat: 'Padanan Gambar', q: 'Perkataan manakah yang sepadan dengan gambar ini?', visual: '👕', options: ['SUDU', 'GIGI', 'BAJU', 'BOLA'], ans: 2 },
+      { cat: 'Mengenal Perkataan', q: 'Pilih perkataan KVKV yang betul bagi gambar ini:', visual: '🎲', options: ['DADU', 'KAKI', 'TOPI', 'SUSU'], ans: 0 },
+      { cat: 'Gabungan Suku Kata', q: 'BO + LA akan menjadi perkataan ...', visual: '⚽', options: ['BOLA', 'BOTA', 'LUKU', 'LATO'], ans: 0 },
+      { cat: 'Mengenal Suku Kata', q: 'Pilih suku kata pertama bagi perkataan "GIGI":', visual: '🦷', options: ['GA', 'GI', 'GU', 'GO'], ans: 1 },
+      { cat: 'Padanan Gambar', q: 'Perkataan manakah yang sepadan dengan gambar ini?', visual: '🐴', options: ['SUSU', 'KUDA', 'TOPI', 'BOLA'], ans: 1 },
+      { cat: 'Mengenal Perkataan', q: 'Perkataan "SUDU" bermula dengan suku kata ...', visual: '🥄', options: ['SU', 'DU', 'KU', 'BA'], ans: 0 },
+      { cat: 'Gabungan Suku Kata', q: 'TO + PI membentuk perkataan ...', visual: '🧢', options: ['TOPI', 'TOBO', 'PITA', 'KAPI'], ans: 0 },
+      { cat: 'Mengenal Perkataan', q: 'Minuman sihat ini ialah ...', visual: '🥛', options: ['SUSU', 'GIGI', 'DADU', 'KAKI'], ans: 0 }
+    ];
+
+    let kuizIndex = 0;
+    let kuizScoreLocal = 0;
+
+    const kuiz = {
+      init() {
+        kuizIndex = 0;
+        kuizScoreLocal = 0;
+        this.renderQuestion();
+      },
+      renderQuestion() {
+        const q = kuizPool[kuizIndex];
+        document.getElementById('kuizProgress').textContent = `Soalan ${kuizIndex + 1} / 10`;
+        document.getElementById('kuizProgressBar').style.width = `${((kuizIndex + 1) / 10) * 100}%`;
+        document.getElementById('kuizCategory').textContent = q.cat;
+        document.getElementById('kuizQuestionText').textContent = q.q;
+        document.getElementById('kuizVisualPrompt').textContent = q.visual;
+
+        const optionsContainer = document.getElementById('kuizOptionsGrid');
+        optionsContainer.innerHTML = '';
+
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = "play-card bg-white border-2 border-indigo-200 hover:bg-indigo-50 font-bold p-3.5 rounded-xl text-left text-indigo-950 flex items-center justify-between";
+          btn.innerHTML = `<span>${opt}</span> <span class="text-xs text-indigo-400">Pilihan ${idx + 1}</span>`;
+          btn.onclick = () => this.answer(idx, q.ans, btn);
+          optionsContainer.appendChild(btn);
+        });
+
+        document.getElementById('kuizFeedback').className = "hidden p-3 rounded-xl font-bold text-sm text-center";
+        document.getElementById('btnKuizNext').disabled = true;
+      },
+      answer(chosen, correct, selectedBtn) {
+        const btns = document.getElementById('kuizOptionsGrid').querySelectorAll('button');
+        btns.forEach(b => b.disabled = true);
+
+        const fb = document.getElementById('kuizFeedback');
+        fb.classList.remove('hidden');
+
+        if (chosen === correct) {
+          kuizScoreLocal++;
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300 text-center";
+          fb.textContent = "🎉 Jawapan Betul! Tepat sekali!";
+          selectedBtn.classList.add('bg-emerald-100', 'border-emerald-400');
+        } else {
+          fb.className = "p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300 text-center";
+          fb.textContent = `❌ Jawapan kurang tepat. Jawapan sebenar ialah: ${kuizPool[kuizIndex].options[correct]}`;
+          selectedBtn.classList.add('bg-rose-100', 'border-rose-300');
+        }
+
+        document.getElementById('btnKuizNext').disabled = false;
+      },
+      next() {
+        if (kuizIndex < kuizPool.length - 1) {
+          kuizIndex++;
+          this.renderQuestion();
+        } else {
+          state.quizScore = kuizScoreLocal;
+          addPoints(kuizScoreLocal * 2);
+          
+          if (kuizScoreLocal >= 8) {
+            state.badges.pembaca = true;
+          }
+          
+          nav.show('viewKeputusan');
+        }
+      },
+      restart() {
+        this.init();
+      }
+    };
+
+    /**
+     * UPDATE RESULTS UI & GAMIFICATION BADGES
+     */
+    function updateKeputusanUI() {
+      document.getElementById('resTotalPoints').textContent = state.score;
+      document.getElementById('resQuizScore').textContent = `${state.quizScore} / 10`;
+      document.getElementById('resCompletedCount').textContent = `${state.completedMisi.size} / 4`;
+
+      const fbText = document.getElementById('resFeedbackText');
+      if (state.quizScore >= 9) {
+        fbText.textContent = "🌟 Hebat! Anda semakin mahir membaca!";
+      } else if (state.quizScore >= 7) {
+        fbText.textContent = "👍 Bagus! Teruskan latihan supaya lebih yakin.";
+      } else {
+        fbText.textContent = "💪 Jangan putus asa. Mari kita berlatih sekali lagi bersama Cikgu Suku Kata.";
+      }
+
+      // Update Badges UI
+      if (state.badges.kenali) {
+        const b1 = document.getElementById('badge1');
+        b1.classList.remove('opacity-40');
+        b1.classList.add('bg-amber-50', 'border-amber-400', 'shadow-sm');
+      }
+      if (state.badges.cantum) {
+        const b2 = document.getElementById('badge2');
+        b2.classList.remove('opacity-40');
+        b2.classList.add('bg-amber-50', 'border-amber-400', 'shadow-sm');
+      }
+      if (state.badges.pembaca) {
+        const b3 = document.getElementById('badge3');
+        b3.classList.remove('opacity-40');
+        b3.classList.add('bg-amber-50', 'border-amber-400', 'shadow-sm');
+      }
+    }
+
+    /**
+     * GLOBAL SCORE CONTROLLER
+     */
+    function addPoints(pts) {
+      state.score += pts;
+      updateHeaderScore();
+    }
+
+    function updateHeaderScore() {
+      const el = document.getElementById('headerScore');
+      if (el) el.textContent = state.score;
+    }
+
+    /**
+     * INITIALIZE APP ON LOAD
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      misi1.init();
+      misi2.init();
+      misi3.init();
+      misi4.init();
+      kuiz.init();
+    });
+  </script>
+</body>
+</html>
